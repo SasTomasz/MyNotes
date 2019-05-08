@@ -15,6 +15,10 @@ import java.util.ArrayList;
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
     private ArrayList<Note> mNotes = new ArrayList<>();
 
+    public NotesRecyclerAdapter(ArrayList<Note> mNotes) {
+        this.mNotes = mNotes;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
