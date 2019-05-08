@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.example.android.mynotes.Utility.RecyclerDecoration;
 import com.example.android.mynotes.adapters.NotesRecyclerAdapter;
@@ -16,11 +17,16 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView mRecyclerView;
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
 
+    // todo handle with wrong toolbar color
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(R.string.app_name);
         mRecyclerView = findViewById(R.id.recyclerView);
         initRecycler();
         setTestData();
