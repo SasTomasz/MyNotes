@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.android.mynotes.Utility.RecyclerDecoration;
 import com.example.android.mynotes.adapters.NotesRecyclerAdapter;
 import com.example.android.mynotes.models.Note;
 
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     public void initRecycler(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        RecyclerDecoration recyclerDecoration = new RecyclerDecoration(8);
         mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes);
+        mRecyclerView.addItemDecoration(recyclerDecoration);
         mRecyclerView.setAdapter(mNotesRecyclerAdapter);
     }
 
