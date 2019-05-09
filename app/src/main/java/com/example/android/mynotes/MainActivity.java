@@ -1,5 +1,6 @@
 package com.example.android.mynotes;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements NotesRecyclerAdap
     @Override
     public void onNoteClick(int position) {
         Log.d(TAG, "onNoteClick: #" + position + " position");
+
+        // start new activity with note content
+        Intent intent = new Intent(this, NoteActivity.class);
+        intent.putExtra("selected_note", mNotes.get(position));
+        startActivity(intent);
 
     }
 }
