@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.example.android.mynotes.Utility.RecyclerDecoration;
 import com.example.android.mynotes.adapters.NotesRecyclerAdapter;
@@ -12,13 +13,11 @@ import com.example.android.mynotes.models.Note;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener {
     private ArrayList<Note> mNotes = new ArrayList<>();
     public RecyclerView mRecyclerView;
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
-
-    // todo handle with wrong toolbar color
-
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         RecyclerDecoration recyclerDecoration = new RecyclerDecoration(8);
-        mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes);
+        mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes, this);
         mRecyclerView.addItemDecoration(recyclerDecoration);
         mRecyclerView.setAdapter(mNotesRecyclerAdapter);
     }
@@ -48,5 +47,11 @@ public class MainActivity extends AppCompatActivity {
             mNotes.get(i).setTimeStamp("Jan 2019");
         }
         mNotesRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        Log.d(TAG, "onNoteClick: #" + position + " position");
+
     }
 }
