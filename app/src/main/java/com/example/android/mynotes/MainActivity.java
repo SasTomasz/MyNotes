@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NotesRecyclerAdap
             mNotes.add(new Note());
             mNotes.get(i).setTitle("Title:" + i);
             mNotes.get(i).setTimeStamp("Jan 2019");
+            mNotes.get(i).setContent("Content: " + i);
         }
         mNotesRecyclerAdapter.notifyDataSetChanged();
     }

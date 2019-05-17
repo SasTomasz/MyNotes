@@ -2,6 +2,7 @@ package com.example.android.mynotes;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class NoteActivity extends AppCompatActivity {
 
     // vars
     boolean mIsThisNewNote;
+    Note mInitialNote;
 
 
 
@@ -31,21 +33,43 @@ public class NoteActivity extends AppCompatActivity {
         receiveIntent();
         if (receiveIntent()){
             // edit mode
+            setNewNoteProperties();
         } else {
             // view mode
+            setNoteProperties();
         }
 
     }
 
+    /**
+     * checking if the activity has an extra and if is it a new note
+     * return true if it is new note
+     */
     public boolean receiveIntent(){
-        // check the activity has an extra
         if (getIntent().hasExtra("selected_note")){
-            Note note = getIntent().getParcelableExtra("selected_note");
-            Log.d(TAG, "onCreate: " + note.toString());
+            mInitialNote = getIntent().getParcelableExtra("selected_note");
+            Log.d(TAG, "onCreate: " + mInitialNote.toString());
             mIsThisNewNote = false;
             return mIsThisNewNote;
+        } else {
+            mIsThisNewNote = true;
+            return mIsThisNewNote;
         }
-        mIsThisNewNote = true;
-        return mIsThisNewNote;
+    }
+
+    // setting initial properties to ui for new note
+    public void setNewNoteProperties(){
+        mToolbarEditText.setText(getString(R.string.new_note_default_title));
+        mToolbarTextView.setText(getString(R.string.new_note_default_title));
+
+    }
+
+    // setting initial properties to ui for existing note
+    public void setNoteProperties(){
+        mToolbarEditText.setText(mInitialNote.getTitle());
+        mToolbarTextView.setText(mInitialNote.getTitle());
+        mLinedEditText.setInputType(InputType.TYPE_NULL);
+        mLinedEditText.setText(mInitialNote.getContent());
+
     }
 }
