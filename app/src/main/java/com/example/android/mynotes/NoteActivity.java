@@ -4,12 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android.mynotes.models.Note;
 
-public class NoteActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity implements View.OnTouchListener,
+        GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
     private static final String TAG = "NoteActivity";
     // ui components
     LinedEditText mLinedEditText;
@@ -19,6 +23,7 @@ public class NoteActivity extends AppCompatActivity {
     // vars
     boolean mIsThisNewNote;
     Note mInitialNote;
+    GestureDetector mGestureDetector;
 
 
 
@@ -29,6 +34,8 @@ public class NoteActivity extends AppCompatActivity {
         mLinedEditText = findViewById(R.id.et_note_activity);
         mToolbarEditText = findViewById(R.id.et_toolbar);
         mToolbarTextView = findViewById(R.id.tv_toolbar);
+
+        initialListener();
 
         receiveIntent();
         if (receiveIntent()){
@@ -71,5 +78,62 @@ public class NoteActivity extends AppCompatActivity {
         mLinedEditText.setInputType(InputType.TYPE_NULL);
         mLinedEditText.setText(mInitialNote.getContent());
 
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return mGestureDetector.onTouchEvent(motionEvent);
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent motionEvent) {
+        Log.d(TAG, "onDoubleTap: double click event");
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    // setting GestureDetector in order turn on edit mode in EditText after double click the view
+    public void initialListener() {
+        mGestureDetector = new GestureDetector(this, this);
+        mLinedEditText.setOnTouchListener(this);
     }
 }
