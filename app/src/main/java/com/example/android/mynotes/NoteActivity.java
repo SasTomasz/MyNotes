@@ -150,7 +150,7 @@ public class NoteActivity extends AppCompatActivity
 
     // setting GestureDetector in order turn on edit mode in EditText after double click the view
     // set OnClickListener to needed views
-    //todo continue setting onclicklisteners and next onbackpressed
+    //todo continue setting onbackpressed
     public void initialListener() {
         mGestureDetector = new GestureDetector(this, this);
         mLinedEditText.setOnTouchListener(this);
@@ -196,5 +196,15 @@ public class NoteActivity extends AppCompatActivity
                 mToolbarEditText.requestFocus();
                 mToolbarEditText.setSelection(mToolbarEditText.length());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mMode == ENABLED_EDIT_MODE){
+            disableEditMode();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }
