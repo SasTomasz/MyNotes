@@ -13,8 +13,12 @@ import android.widget.TextView;
 
 import com.example.android.mynotes.models.Note;
 
-public class NoteActivity extends AppCompatActivity implements View.OnTouchListener,
-        GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
+public class NoteActivity extends AppCompatActivity
+        implements
+        View.OnTouchListener,
+        GestureDetector.OnGestureListener,
+        GestureDetector.OnDoubleTapListener,
+        View.OnClickListener {
 
     private static final String TAG = "NoteActivity";
     private static final int ENABLED_EDIT_MODE = 0;
@@ -43,6 +47,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnTouchListe
         mToolbarTextView = findViewById(R.id.tv_toolbar);
         mToolbarBackArrow = findViewById(R.id.b_back_arrow);
         mToolbarPositiveCheck = findViewById(R.id.b_positive_check);
+
 
         initialListener();
 
@@ -144,9 +149,14 @@ public class NoteActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     // setting GestureDetector in order turn on edit mode in EditText after double click the view
+    // set OnClickListener to needed views
+    //todo continue setting onclicklisteners and next onbackpressed
     public void initialListener() {
         mGestureDetector = new GestureDetector(this, this);
         mLinedEditText.setOnTouchListener(this);
+        mToolbarPositiveCheck.setOnClickListener(this);
+        mToolbarTextView.setOnClickListener(this);
+
     }
 
     // set particular ui component to visible or not
@@ -174,5 +184,17 @@ public class NoteActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d(TAG, "disableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
     }
 
-    // todo continue setting dis/ene options figure out what is wrong (isn't work)
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.b_positive_check:
+                disableEditMode();
+                break;
+
+            case R.id.tv_toolbar:
+                enableEditMode();
+                mToolbarEditText.requestFocus();
+                mToolbarEditText.setSelection(mToolbarEditText.length());
+        }
+    }
 }
