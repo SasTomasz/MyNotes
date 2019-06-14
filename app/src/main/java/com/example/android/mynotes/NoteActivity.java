@@ -150,7 +150,6 @@ public class NoteActivity extends AppCompatActivity
 
     // setting GestureDetector in order turn on edit mode in EditText after double click the view
     // set OnClickListener to needed views
-    //todo continue setting onbackpressed
     public void initialListener() {
         mGestureDetector = new GestureDetector(this, this);
         mLinedEditText.setOnTouchListener(this);
@@ -169,6 +168,8 @@ public class NoteActivity extends AppCompatActivity
 
         mMode = ENABLED_EDIT_MODE;
 
+        enableEditContent();
+
         Log.d(TAG, "enableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
     }
 
@@ -181,8 +182,28 @@ public class NoteActivity extends AppCompatActivity
 
         mMode = DISABLED_EDIT_MODE;
 
+        disableEditContent();
+
         Log.d(TAG, "disableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
     }
+
+    private void disableEditContent(){
+        mLinedEditText.setKeyListener(null);
+        mLinedEditText.setFocusable(false);
+        mLinedEditText.setFocusableInTouchMode(false);
+        mLinedEditText.setCursorVisible(false);
+        mLinedEditText.clearFocus();
+    }
+
+    private void enableEditContent(){
+        mLinedEditText.setKeyListener(new EditText(this).getKeyListener());
+        mLinedEditText.setFocusable(true);
+        mLinedEditText.setFocusableInTouchMode(true);
+        mLinedEditText.setCursorVisible(true);
+        mLinedEditText.requestFocus();
+    }
+
+    //todo hide soft keybord
 
     @Override
     public void onClick(View view) {
@@ -195,6 +216,7 @@ public class NoteActivity extends AppCompatActivity
                 enableEditMode();
                 mToolbarEditText.requestFocus();
                 mToolbarEditText.setSelection(mToolbarEditText.length());
+                break;
         }
     }
 
