@@ -1,5 +1,6 @@
 package com.example.android.mynotes;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -184,6 +186,7 @@ public class NoteActivity extends AppCompatActivity
 
         disableEditContent();
 
+
         Log.d(TAG, "disableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
     }
 
@@ -203,12 +206,21 @@ public class NoteActivity extends AppCompatActivity
         mLinedEditText.requestFocus();
     }
 
-    //todo hide soft keybord
+    private void hideSoftKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if (view == null){
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.b_positive_check:
+                hideSoftKeyboard();
                 disableEditMode();
                 break;
 
