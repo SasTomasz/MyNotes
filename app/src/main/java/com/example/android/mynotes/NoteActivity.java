@@ -157,6 +157,7 @@ public class NoteActivity extends AppCompatActivity
         mLinedEditText.setOnTouchListener(this);
         mToolbarPositiveCheck.setOnClickListener(this);
         mToolbarTextView.setOnClickListener(this);
+        mToolbarBackArrow.setOnClickListener(this);
 
     }
 
@@ -228,6 +229,10 @@ public class NoteActivity extends AppCompatActivity
                 enableEditMode();
                 mToolbarEditText.requestFocus();
                 mToolbarEditText.setSelection(mToolbarEditText.length());
+                break;
+
+            case R.id.b_back_arrow:
+                finish();
                 break;
         }
     }
