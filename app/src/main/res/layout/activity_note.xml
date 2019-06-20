@@ -31,6 +31,7 @@
         android:textColor="@color/primaryTextColor"
         android:textSize="24sp"
         tools:text="@string/sample_text"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:imeOptions="flagNoExtractUi"/>
 
 </LinearLayout>

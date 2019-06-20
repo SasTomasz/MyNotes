@@ -76,6 +76,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/b_positive_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/b_positive_check"
-        app:layout_constraintTop_toTopOf="@+id/b_positive_check" />
+        app:layout_constraintTop_toTopOf="@+id/b_positive_check"
+        android:imeOptions="flagNoExtractUi"/>
 
 </android.support.constraint.ConstraintLayout>
