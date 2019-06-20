@@ -1,12 +1,14 @@
 package com.example.android.mynotes;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.example.android.mynotes.Utility.RecyclerDecoration;
 import com.example.android.mynotes.adapters.NotesRecyclerAdapter;
@@ -14,20 +16,29 @@ import com.example.android.mynotes.models.Note;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener {
+public class MainActivity extends AppCompatActivity
+        implements
+        NotesRecyclerAdapter.OnNoteListener,
+        View.OnClickListener {
     private ArrayList<Note> mNotes = new ArrayList<>();
-    public RecyclerView mRecyclerView;
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    //ui elements
+    public RecyclerView mRecyclerView;
+    public FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
-        mRecyclerView = findViewById(R.id.recyclerView);
         initRecycler();
         setTestData();
     }
@@ -60,5 +71,11 @@ public class MainActivity extends AppCompatActivity implements NotesRecyclerAdap
         intent.putExtra("selected_note", mNotes.get(position));
         startActivity(intent);
 
+    }
+    // start NoteActivity as new note
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, NoteActivity.class);
+        startActivity(intent);
     }
 }
