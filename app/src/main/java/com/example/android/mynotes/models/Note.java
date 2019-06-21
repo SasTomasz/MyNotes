@@ -1,11 +1,24 @@
 package com.example.android.mynotes.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-
+@Entity (tableName = "notes")
 public class Note implements Parcelable {
+
+    @PrimaryKey (autoGenerate = true)
+    private int id;
+
+    @ColumnInfo (name = "title")
     private String title;
+
+    @ColumnInfo (name ="content")
     private String content;
+
+    @ColumnInfo (name = "timestamp")
     private String timeStamp;
 
     public Note(String title, String content, String timeStamp) {
@@ -14,10 +27,12 @@ public class Note implements Parcelable {
         this.timeStamp = timeStamp;
     }
 
+    @Ignore
     public Note() {
     }
 
     protected Note(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         content = in.readString();
         timeStamp = in.readString();
@@ -35,34 +50,49 @@ public class Note implements Parcelable {
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
+
         return title;
     }
 
     public void setTitle(String title) {
+
         this.title = title;
     }
 
     public String getContent() {
+
         return content;
     }
 
     public void setContent(String content) {
+
         this.content = content;
     }
 
     public String getTimeStamp() {
+
         return timeStamp;
     }
 
     public void setTimeStamp(String timeStamp) {
+
         this.timeStamp = timeStamp;
     }
 
     @Override
     public String toString() {
         return "Note{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", timeStamp='" + timeStamp + '\'' +
                 '}';
@@ -75,6 +105,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(content);
         parcel.writeString(timeStamp);
