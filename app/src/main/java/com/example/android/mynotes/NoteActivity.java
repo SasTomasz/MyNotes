@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.mynotes.models.Note;
+import com.example.android.mynotes.persistence.NoteRepository;
 
 public class NoteActivity extends AppCompatActivity
         implements
@@ -37,6 +38,7 @@ public class NoteActivity extends AppCompatActivity
     Note mInitialNote;
     GestureDetector mGestureDetector;
     int mMode;
+    NoteRepository mNoteRepository;
 
 
 
@@ -49,6 +51,8 @@ public class NoteActivity extends AppCompatActivity
         mToolbarTextView = findViewById(R.id.tv_toolbar);
         mToolbarBackArrow = findViewById(R.id.b_back_arrow);
         mToolbarPositiveCheck = findViewById(R.id.b_positive_check);
+
+        mNoteRepository = new NoteRepository(this);
 
 
         initialListener();
@@ -80,6 +84,19 @@ public class NoteActivity extends AppCompatActivity
             mIsThisNewNote = true;
             return mIsThisNewNote;
         }
+    }
+
+    private void saveChanges(){
+        if (mIsThisNewNote){
+            saveNote();
+            //        todo continue save changes (save new note or update it)
+        } else {
+            // update note
+        }
+    }
+
+    private void saveNote(){
+        mNoteRepository.insertNote(mInitialNote);
     }
 
     // setting initial properties to ui for new note
@@ -186,6 +203,7 @@ public class NoteActivity extends AppCompatActivity
         mMode = DISABLED_EDIT_MODE;
 
         disableEditContent();
+        saveNote();
 
 
         Log.d(TAG, "disableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
