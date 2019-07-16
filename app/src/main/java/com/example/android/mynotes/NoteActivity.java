@@ -3,7 +3,9 @@ package com.example.android.mynotes;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -21,7 +23,8 @@ public class NoteActivity extends AppCompatActivity
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        TextWatcher {
 
     private static final String TAG = "NoteActivity";
     private static final int ENABLED_EDIT_MODE = 0;
@@ -36,6 +39,7 @@ public class NoteActivity extends AppCompatActivity
     // vars
     boolean mIsThisNewNote;
     Note mInitialNote;
+    Note mFinalNote;
     GestureDetector mGestureDetector;
     int mMode;
     NoteRepository mNoteRepository;
@@ -71,12 +75,13 @@ public class NoteActivity extends AppCompatActivity
     }
 
     /**
-     * checking if the activity has an extra and if it is a new note
-     * return true
+     * checking if the activity has an Extra
+     * @return true when it is a new note
      */
     public boolean receiveIntent(){
         if (getIntent().hasExtra("selected_note")){
             mInitialNote = getIntent().getParcelableExtra("selected_note");
+            mFinalNote = getIntent().getParcelableExtra("selected_note");
             Log.d(TAG, "onCreate: " + mInitialNote.toString());
             mIsThisNewNote = false;
             return mIsThisNewNote;
@@ -96,13 +101,23 @@ public class NoteActivity extends AppCompatActivity
     }
 
     private void saveNote(){
-        mNoteRepository.insertNote(mInitialNote);
+        mNoteRepository.insertNote(mFinalNote);
     }
 
     // setting initial properties to ui for new note
     public void setNewNoteProperties(){
         mToolbarEditText.setText(getString(R.string.new_note_default_title));
         mToolbarTextView.setText(getString(R.string.new_note_default_title));
+
+        mInitialNote = new Note();
+        mFinalNote = new Note();
+        mInitialNote.setTitle("Note Title");
+        mInitialNote.setContent("What are You thinking about");
+        mInitialNote.setTimeStamp("Jun 2014");
+        mFinalNote.setTitle("Note Title");
+
+        Log.d(TAG, "setNewNoteProperties: mInitialNote = " + mInitialNote.toString()
+                + "\n mFinalNote = " + mFinalNote.toString());
 
     }
 
@@ -112,6 +127,7 @@ public class NoteActivity extends AppCompatActivity
         mToolbarTextView.setText(mInitialNote.getTitle());
         mLinedEditText.setInputType(InputType.TYPE_NULL);
         mLinedEditText.setText(mInitialNote.getContent());
+        Log.d(TAG, "setNoteProperties: mInitialNote = " + mInitialNote.toString());
 
     }
 
@@ -175,6 +191,7 @@ public class NoteActivity extends AppCompatActivity
         mToolbarPositiveCheck.setOnClickListener(this);
         mToolbarTextView.setOnClickListener(this);
         mToolbarBackArrow.setOnClickListener(this);
+        mToolbarEditText.addTextChangedListener(this);
 
     }
 
@@ -203,10 +220,31 @@ public class NoteActivity extends AppCompatActivity
         mMode = DISABLED_EDIT_MODE;
 
         disableEditContent();
-        saveNote();
+
 
 
         Log.d(TAG, "disableEditMode: Back Arrow = " + mToolbarBackArrow.getVisibility());
+
+//        Check if the user typed something to note. If not the note won't be save
+        String noteContent = mLinedEditText.getText().toString();
+        noteContent.replace("\n", "");
+        noteContent.replace(" ", "");
+        if (noteContent.length() > 0){
+            mFinalNote.setTitle(mToolbarEditText.getText().toString());
+            mFinalNote.setContent(mLinedEditText.getText().toString());
+            String timeStamp = "Jan 16";
+            mFinalNote.setTimeStamp(timeStamp);
+
+            // if the note was altered change it
+            /**
+             * todo in this condition there's a bug. If You make new note there's no content so
+             * todo getContent produce nullpointerexception
+             */
+            if (!mInitialNote.getTitle().equals(mFinalNote.getTitle())
+                    || !mInitialNote.getContent().equals(mFinalNote.getContent())){
+                saveChanges();
+            }
+        }
     }
 
     private void disableEditContent(){
@@ -278,5 +316,20 @@ public class NoteActivity extends AppCompatActivity
         if (mMode == ENABLED_EDIT_MODE){
             enableEditMode();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        mToolbarTextView.setText(charSequence.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">My Notes</string>
     <string name="sample_text">Sample text</string>
-    <string name="new_note_default_title">New Title</string>
+    <string name="new_note_default_title">Note Title</string>
 </resources>
