@@ -62,7 +62,7 @@ public class NoteActivity extends AppCompatActivity
 
         initialListener();
 
-        receiveIntent();
+//        receiveIntent();
         if (receiveIntent()){
             // edit mode
             setNewNoteProperties();
@@ -82,8 +82,11 @@ public class NoteActivity extends AppCompatActivity
     public boolean receiveIntent(){
         if (getIntent().hasExtra("selected_note")){
             mInitialNote = getIntent().getParcelableExtra("selected_note");
-            mFinalNote = getIntent().getParcelableExtra("selected_note");
-            Log.d(TAG, "onCreate: " + mInitialNote.toString());
+            mFinalNote = new Note();
+            mFinalNote.setTitle(mInitialNote.getTitle());
+            mFinalNote.setContent(mInitialNote.getContent());
+            mFinalNote.setTimeStamp(mInitialNote.getTimeStamp());
+            mFinalNote.setId(mInitialNote.getId());
             mIsThisNewNote = false;
             return mIsThisNewNote;
         } else {
@@ -92,12 +95,16 @@ public class NoteActivity extends AppCompatActivity
         }
     }
 
+    private void updateNote(){
+        mNoteRepository.updateNote(mFinalNote);
+    }
+
     private void saveChanges(){
         if (mIsThisNewNote){
             saveNote();
-            //        todo continue save changes (save new note or update it)
         } else {
             // update note
+            updateNote();
         }
     }
 
@@ -238,6 +245,7 @@ public class NoteActivity extends AppCompatActivity
             // if the note was altered change it
             if (!mInitialNote.getTitle().equals(mFinalNote.getTitle())
                     || !mInitialNote.getContent().equals(mFinalNote.getContent())){
+                Log.d(TAG, "disableEditMode: comparison");
                 saveChanges();
             }
         }
