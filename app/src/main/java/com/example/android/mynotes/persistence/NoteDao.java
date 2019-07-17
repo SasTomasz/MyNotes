@@ -20,8 +20,8 @@ public interface NoteDao {
     LiveData<List<Note>> getNotes();
 
     @Delete
-    int delete(Note... notes);
+    void delete(Note... notes);
 
     @Update
-    int updateNotes(Note... notes);
+    void updateNotes(Note... notes);
 }

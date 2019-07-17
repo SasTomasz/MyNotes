@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity
 
     private void deleteNote(Note note){
         mNotes.remove(note);
+        mNoteRepository.deleteNote(note);
         mNotesRecyclerAdapter.notifyDataSetChanged();
     }
 
