@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.android.mynotes.Utility.TimeStampUtility;
 import com.example.android.mynotes.models.Note;
 import com.example.android.mynotes.persistence.NoteRepository;
 
@@ -113,7 +114,6 @@ public class NoteActivity extends AppCompatActivity
         mFinalNote = new Note();
         mInitialNote.setTitle("Note Title");
         mInitialNote.setContent("What are You thinking about");
-        mInitialNote.setTimeStamp("Jun 2014");
         mFinalNote.setTitle("Note Title");
 
         Log.d(TAG, "setNewNoteProperties: mInitialNote = " + mInitialNote.toString()
@@ -232,14 +232,10 @@ public class NoteActivity extends AppCompatActivity
         if (noteContent.length() > 0){
             mFinalNote.setTitle(mToolbarEditText.getText().toString());
             mFinalNote.setContent(mLinedEditText.getText().toString());
-            String timeStamp = "Jan 16";
+            String timeStamp = TimeStampUtility.getTimeStamp();
             mFinalNote.setTimeStamp(timeStamp);
 
             // if the note was altered change it
-            /**
-             * todo in this condition there's a bug. If You make new note there's no content so
-             * todo getContent produce nullpointerexception
-             */
             if (!mInitialNote.getTitle().equals(mFinalNote.getTitle())
                     || !mInitialNote.getContent().equals(mFinalNote.getContent())){
                 saveChanges();

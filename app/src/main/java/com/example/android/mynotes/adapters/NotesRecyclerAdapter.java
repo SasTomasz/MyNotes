@@ -2,19 +2,22 @@ package com.example.android.mynotes.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.mynotes.R;
+import com.example.android.mynotes.Utility.TimeStampUtility;
 import com.example.android.mynotes.models.Note;
 
 import java.util.ArrayList;
 
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
-    private ArrayList<Note> mNotes = new ArrayList<>();
+    private ArrayList<Note> mNotes;
     private OnNoteListener mOnNoteListener;
+    private static final String TAG = "NotesRecyclerAdapter";
 
     public NotesRecyclerAdapter(ArrayList<Note> mNotes, OnNoteListener onNoteListener) {
         this.mNotes = mNotes;
@@ -31,8 +34,16 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.title.setText(mNotes.get(i).getTitle());
-        viewHolder.timestamp.setText(mNotes.get(i).getTimeStamp());
+        try{
+            String month = TimeStampUtility.getMonthName(mNotes.get(i).getTimeStamp()
+                    .substring(0, 2));
+            String year = mNotes.get(i).getTimeStamp().substring(3);
+            String date = month + " " + year;
+            viewHolder.title.setText(mNotes.get(i).getTitle());
+            viewHolder.timestamp.setText(date);
+        } catch(NullPointerException e){
+            Log.d(TAG, "onBindViewHolder: " + e.getMessage());
+        }
 
     }
 
